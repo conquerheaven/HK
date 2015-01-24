@@ -1,5 +1,5 @@
 
-<?php include $_SERVER['DOCUMENT_ROOT'] . 'HK/includes/head.html';?>
+
 <!DOCTYPE>
 <html>
 <head>
@@ -46,6 +46,11 @@
 	a{cursor:pointer}
 	</style>
 </head>
+<?php 
+$pageId = '[0]';
+include $_SERVER['DOCUMENT_ROOT'] . 'HK/includes/head.html';
+include $_SERVER['DOCUMENT_ROOT'].'HK/includes/yanzheng.php';
+?>
 <body>
 <div class="container-fluid">
 	<div class="row-fluid">

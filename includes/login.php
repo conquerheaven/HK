@@ -18,12 +18,12 @@
 		<div class="span12" style="text-align:center">
   <h2>登录</h2>
 <?php if(isset($loginError)):?>
-<p><?php htmlout($loginError)?></p>
+<p><?php echo $loginError?></p>
 <?php endif;?>
 <form action="" method="post">
 <div style="text-align:center;">
-<input type="text" name="username" id="username" placeholder="用户名"/><br>
-<input type="password" name="password" id="password" placeholder="密码"/><br>
+<input type="text" name="username" id="username" placeholder="用户名" class="span2"/><br>
+<input type="password" name="password" id="password" placeholder="密码" class="span2"/><br>
 <input type="submit" value="登录" class="btn btn-success" contenteditable="true"/><br>
 <input type="hidden" name="action" value="login" />
 

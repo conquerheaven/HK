@@ -2,7 +2,7 @@
 function userIsLoggedIn(){
 	if(isset($_POST['action']) and $_POST['action'] == 'login'){
 		if(!isset($_POST['username']) or $_POST['username'] == '' or !isset($_POST['password']) or $_POST['password'] == ''){
-			$GLOBALS['loginError'] = 'ÇëÌîĞ´ÍêÕû£¡';
+			$GLOBALS['loginError'] = 'è¯·å¡«å†™å®Œæ•´ï¼';
 			return false;
 		}
 		$password = md5($_POST['password']);
@@ -17,7 +17,7 @@ function userIsLoggedIn(){
 			unset($_SESSION['loggedIn']);
 			unset($_SESSION['username']);
 			unset($_SESSION['password']);
-			$GLOBALS['loginError'] = 'ÓÃ»§Ãû»òÃÜÂë´íÎó£¡';
+			$GLOBALS['loginError'] = 'ç”¨æˆ·åæˆ–å¯†ç é”™è¯¯ï¼';
 			return false;
 		}
 	}
@@ -44,7 +44,7 @@ function databaseContainsUser($username , $password){
 		$s->bindValue(':password',$password);
 		$s->execute();
 	} catch (PDOException $e) {
-		$error = 'Êı¾İ¿â´íÎó£¬ÑéÖ¤Ê§°Ü£¡';
+		$error = 'æ•°æ®åº“é”™è¯¯ï¼';
 		include 'error.html';
 		exit();
 	}
@@ -66,7 +66,7 @@ function userHasRole(){
 		$s->bindValue(":pageId" , '%'.$_SESSION['pageId'].'%');
 		$s->execute();
 	} catch (PDOException $e) {
-		$error = 'Êı¾İ¿â´íÎó£¬ÑéÖ¤Ê§°Ü£¡';
+		$error = 'æ•°æ®åº“é”™è¯¯ï¼';
 		include 'error.html';
 		exit();
 	}

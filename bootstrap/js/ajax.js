@@ -16,6 +16,7 @@
 		message = "kehu="+kehu;
 		if(message == "kehu="){
 			hideKehu();
+			document.getElementById("History").innerHTML = "";
 			return;
 		}
 		CreateXMLHttpRequest();

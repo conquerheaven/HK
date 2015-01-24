@@ -31,7 +31,7 @@ function getState($id){
 }
 
 try {
-	$sql = 'SELECT xiadangtime,productsid,stats FROM ddmessage WHERE kehuid="'.$id.'"';
+	$sql = 'SELECT xiadangtime,productsid,stats FROM ddmessage WHERE kehuid="'.$id.'" AND stats <> 6';
 	$s = $pdo->query($sql);
 	while ($row = $s->fetch()){
 		$Pro = preg_split('/[^0-9]/', $row['productsid']);

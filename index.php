@@ -1,22 +1,9 @@
 <?php
 $pageId = '[0]';
 
-include '/includes/head.html';
+include $_SERVER['DOCUMENT_ROOT'].'HK/includes/head.html';
 
-require_once '/includes/access.inc.php';
-
-if(!userIsLoggedIn()){
-	include '/includes/login.php';
-	include '/includes/foot.html';
-	exit();
-}
-
-if(!userHasRole()){
-	$error = '权限不足.';
-	include 'error.html';
-	include '/includes/foot.html';
-	exit();
-}
+include $_SERVER['DOCUMENT_ROOT'].'HK/includes/yanzheng.php';
 
 ?>
 <!DOCTYPE>
@@ -29,5 +16,5 @@ if(!userHasRole()){
 </body>
 </html>
 <?php 
-include '/includes/foot.html';
+include $_SERVER['DOCUMENT_ROOT'].'HK/includes/foot.html';
 ?>

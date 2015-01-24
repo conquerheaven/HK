@@ -14,7 +14,7 @@ try{
 	echo '<table class="table">';
 	while($row = $s->fetch()){
 		$text = '【'.$row['name'].'】【'.$row['telephone'].'】';
-		$text = str_replace($kehu, '<strong>'.$kehu.'</strong>', $text);
+		$text = str_ireplace($kehu, '<strong>'.$kehu.'</strong>', $text);
 		echo '<tr><td><a id="'.$row['ID'].'" onMouseDown="setKehu('.$row['ID'].')">'.$text.'</a></td></tr>';
 	}
 	echo '</table>';
