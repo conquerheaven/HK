@@ -5,7 +5,11 @@ function userIsLoggedIn(){
 			$GLOBALS['loginError'] = 'ÇëÌîĞ´ÍêÕû£¡';
 			return false;
 		}
+<<<<<<< HEAD
 		$password = md5($_POST['password']);
+=======
+		$password = md5($_POST['password'] . 'haoke');
+>>>>>>> e062470de3f54e2394241421aad1042a54fe4bcb
 		if(databaseContainsUser($_POST['username'] , $password)){
 			session_start();
 			$_SESSION['loggedIn'] = true;
