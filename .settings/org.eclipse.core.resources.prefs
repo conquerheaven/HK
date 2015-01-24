@@ -1,6 +1,5 @@
 eclipse.preferences.version=1
 encoding//admin/XiaoShouGuanLi/XiaoShouDan/XiaDan.php=UTF-8
-<<<<<<< HEAD
 encoding//admin/XiaoShouGuanLi/XiaoShouDan/addPro.php=UTF-8
 encoding//admin/XiaoShouGuanLi/XiaoShouDan/deletePro.php=UTF-8
 encoding//admin/XiaoShouGuanLi/XiaoShouDan/getHistory.php=UTF-8
@@ -8,8 +7,6 @@ encoding//admin/XiaoShouGuanLi/XiaoShouDan/kehu.php=UTF-8
 encoding//admin/XiaoShouGuanLi/XiaoShouDan/modifyPro.php=UTF-8
 encoding//admin/XiaoShouGuanLi/XiaoShouDan/pro.php=UTF-8
 encoding//admin/XiaoShouGuanLi/XiaoShouDan/showOrder.php=UTF-8
-=======
->>>>>>> e062470de3f54e2394241421aad1042a54fe4bcb
 encoding//includes/head.html=UTF-8
 encoding//includes/login.php=UTF-8
 encoding/index.php=UTF-8
