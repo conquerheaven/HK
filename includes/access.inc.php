@@ -10,7 +10,7 @@ function userIsLoggedIn(){
 			session_start();
 			$_SESSION['loggedIn'] = true;
 			$_SESSION['username'] = $_POST['username'];
-			$_SESSION['password'] = $_POST['password'];
+			$_SESSION['password'] = $password;
 			return true;
 		}else{
 			session_start();
@@ -30,6 +30,7 @@ function userIsLoggedIn(){
 	}
 	session_start();
 	if(isset($_SESSION['loggedIn'])){
+		//return true;
 		return databaseContainsUser($_SESSION['username'] , $_SESSION['password']);
 	}
 }
