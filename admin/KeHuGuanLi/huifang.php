@@ -185,16 +185,20 @@ $("#shi").change(function(){
 
 $("#query").click(function(){
 	var starttime = $("#starttime").val();
-	var endtime = $("endtime").val();
-	if(starttime != "" && endtime == "" || (starttime == "" && endtime != "")){
+	var endtime = $("#endtime").val();
+	if(starttime != null && endtime == null || (starttime == null && endtime != null)){
 		alert("请选择起始或结束时间！");
 		return;
 	}
-	if(starttime != "" && endtime != ""){
+	if(starttime != null && endtime != null){
 		if(starttime > endtime){
 			alert("起始时间不能大于结束时间！");
 			return;
 		}
+	}
+	if(starttime == null && endtime == null){
+		starttime="";
+		endtime="";
 	}
 	$.getJSON(
 			'/HK/includes/get_huifang.php',
@@ -202,7 +206,7 @@ $("#query").click(function(){
 			kehutype:$("#kehutype").val(),
 			starttime:starttime,
 			endtime:endtime,
-			provincecode:$("sheng").val(),
+			provincecode:$("#sheng").val(),
 			citycode:$("#shi").val(),
 			areacode:$("#xian").val(),
 			kehuid:$("#kehuname").val(),
@@ -221,36 +225,36 @@ $("#query").click(function(){
 	<option value="${dataID}">${dataValue}</option>
 </script>
 <script id="resultDataTemplate" type="text/x-jQuery-tmpl">
-		<tr class="success">
-			<td>${}</td>
-			<td>${}</td>
-			<td>${}</td>
-			<td>${}</td>
-			<td>${}</td>
-			<td>${}</td>
-			<td>${}</td>
-			<td>${}</td>
-			<td>${}</td>
-			<td>${}</td>
-			<td>${}</td>
-			<td>${}</td>
-			<td>${}</td>
-			<td>${}</td>
-			<td>${}</td>
-			<td>${}</td>
-			<td>${}</td>
-			<td>${}</td>
-			<td>${}</td>
-			<td>${}</td>
-			<td>${}</td>
-			<td>${}</td>
-			<td>${}</td>
-			<td>${}</td>
-			<td>${}</td>
-			<td>${}</td>
-			<td>${}</td>
-			<td>${}</td>
-		</tr>
+<tr class="success">
+<td>${xuhao}</td>
+<td>${addtime}</td>
+<td>${firstjytime}</td>
+<td>${nojyday}</td>
+<td>${jytimes}</td>
+<td>${province}</td>
+<td>${city}</td>
+<td>${area}</td>
+<td>${scname}</td>
+<td>${scmianji}</td>
+<td>${scxingzhi}</td>
+<td>${yearsaleval}</td>
+<td>${pinpai}</td>
+<td>${kehuname}</td>
+<td>${fuzeren}</td>
+<td>${totalsale}</td>
+<td>${lastthtime}</td>
+<td>${lasthftime}</td>
+<td>${dianyuannum}</td>
+<td>${dzname}</td>
+<td>${chuyangnum}</td>
+<td>${zxdangci}</td>
+<td>${tgyishi}</td>
+<td>${tihuoyx}</td>
+<td>${competepinpai}</td>
+<td>${jsxingzhi}</td>
+<td>${khlaiyuan}</td>
+<td>${baifangren}</td>
+</tr>
 </script>
 </body>
 </html>

@@ -7,7 +7,7 @@ try {
 	$s = $pdo->prepare($sql);
 	$s->execute();
 } catch (PDOException $e) {
-	$error = $e.'Êı¾İ¿â´íÎó£¡';
+	$error = $e.'æ•°æ®åº“é”™è¯¯ï¼';
 	include 'error.php';
 	exit();
 }
