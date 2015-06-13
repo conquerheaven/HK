@@ -11,6 +11,7 @@
 	<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="../bootstrap/js/jquery-1.8.3.min.js"></script>
 	<script type="text/javascript" src="../bootstrap/js/bootstrap-dropdown.js"></script>
+	<script type="text/javascript" src="../bootstrap/js/jquery-session.js"></script>
 </head>
 <body>
 <div class="container">

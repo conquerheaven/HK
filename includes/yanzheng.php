@@ -13,5 +13,18 @@ if(!userHasRole()){
 	include $_SERVER['DOCUMENT_ROOT'].'HK/includes/foot.html';
 	exit();
 }
-
 ?>
+<html>
+<body>
+
+<script type="text/javascript">
+var session = "<?php echo $_SESSION['username'];?>";
+var str = '<ul class="nav pull-right"><li><a>'+session+'</a></li></ul><ul class="nav pull-right"><li><a href="#" onclick="logout()">退出</a></li></ul>';
+$("#nav").html(str);
+
+function logout(){
+	$("#logout").submit();
+}
+</script>
+</body>
+</html>

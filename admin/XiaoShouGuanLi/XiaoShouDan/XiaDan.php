@@ -17,6 +17,7 @@
 	<script type="text/javascript" src="../../../bootstrap/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
 	<script type="text/javascript" src="../../../bootstrap/js/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
 	<script type="text/javascript" src="../../../bootstrap/js/ajax.js"></script>
+	<script type="text/javascript" src="../../../bootstrap/js/jquery-session.js"></script>
 	<script type="text/javascript">
 	function showKehu(){
 		document.getElementById("Kehumenu").style.display="block";

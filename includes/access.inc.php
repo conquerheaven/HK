@@ -26,7 +26,8 @@ function userIsLoggedIn(){
 		unset($_SESSION['loggedIn']);
 		unset($_SESSION['username']);
 		unset($_SESSION['password']);
-		header('Location: ' . $_POST['goto']);
+		//header('Location: ' . $_POST['goto']);
+		return false;
 	}
 	session_start();
 	if(isset($_SESSION['loggedIn'])){

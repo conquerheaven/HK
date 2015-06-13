@@ -1,9 +1,10 @@
 <?php
 include 'db.inc.php';
 
+$areaID = $_GET['areaID'];
 
 try {
-	$sql = 'SELECT code,name FROM province';
+	$sql = 'SELECT ID,sheng FROM kehuadd where preid = '.$areaID;
 	$s = $pdo->prepare($sql);
 	$s->execute();
 } catch (PDOException $e) {
@@ -11,7 +12,9 @@ try {
 	include 'error.php';
 	exit();
 }
+$arr=array();
+$arr[] = array('dataID'=>'-1' , 'dataValue'=>'全部');
 while($row = $s->fetch()){
-	$provinceID[] = $row['code'];
-	$provinceName[] = $row['name'];
+	$arr[] = array('dataID'=>$row['ID'] , 'dataValue'=>$row['sheng']);
 }
+echo json_encode($arr);

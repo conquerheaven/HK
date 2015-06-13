@@ -4,9 +4,8 @@ include 'db.inc.php';
 $provinceID = $_GET['provinceID'];
 
 try {
-	$sql = 'SELECT code,name FROM city where provincecode = :provincecode';
+	$sql = 'SELECT ID,sheng FROM kehuadd where preid = '.$provinceID;
 	$s = $pdo->prepare($sql);
-	$s->bindValue(':provincecode',$provinceID);
 	$s->execute();
 } catch (PDOException $e) {
 	$error = $e.'数据库错误！';
@@ -14,8 +13,8 @@ try {
 	exit();
 }
 $arr=array();
-$arr[] = array('dataID'=>'0' , 'dataValue'=>'全部');
+$arr[] = array('dataID'=>'-1' , 'dataValue'=>'全部');
 while($row = $s->fetch()){
-	$arr[] = array('dataID'=>$row['code'] , 'dataValue'=>$row['name']);
+	$arr[] = array('dataID'=>$row['ID'] , 'dataValue'=>$row['sheng']);
 }
 echo json_encode($arr);

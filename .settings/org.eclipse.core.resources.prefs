@@ -1,5 +1,6 @@
 eclipse.preferences.version=1
 encoding//admin/KeHuGuanLi/huifang.php=UTF-8
+encoding//admin/KeHuGuanLi/kehuinfo.php=UTF-8
 encoding//admin/XiaoShouGuanLi/XiaoShouDan/XiaDan.php=UTF-8
 encoding//admin/XiaoShouGuanLi/XiaoShouDan/addPro.php=UTF-8
 encoding//admin/XiaoShouGuanLi/XiaoShouDan/deletePro.php=UTF-8
@@ -10,6 +11,7 @@ encoding//admin/XiaoShouGuanLi/XiaoShouDan/pro.php=UTF-8
 encoding//admin/XiaoShouGuanLi/XiaoShouDan/showOrder.php=UTF-8
 encoding//includes/access.inc.php=UTF-8
 encoding//includes/error.php=UTF-8
+encoding//includes/get_area.php=UTF-8
 encoding//includes/get_city.php=UTF-8
 encoding//includes/get_huifang.php=UTF-8
 encoding//includes/get_kehuname.php=UTF-8

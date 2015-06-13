@@ -16,7 +16,7 @@
 	<script type="text/javascript" src="../../bootstrap/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
 	<script type="text/javascript" src="../../bootstrap/js/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
 	<script type="text/javascript" src="../../bootstrap/js/ajax.js"></script>
-
+	<script type="text/javascript" src="../../bootstrap/js/jquery-session.js"></script>
 	
 <?php 
 $pageId = '[0]';
@@ -25,7 +25,6 @@ include $_SERVER['DOCUMENT_ROOT'].'HK/includes/yanzheng.php';
 include $_SERVER['DOCUMENT_ROOT'].'HK/includes/get_kehuname.php';
 include $_SERVER['DOCUMENT_ROOT'].'HK/includes/get_scname.php';
 include $_SERVER['DOCUMENT_ROOT'].'HK/includes/get_tihuoyx.php';
-include $_SERVER['DOCUMENT_ROOT'].'HK/includes/get_province.php';
 include $_SERVER['DOCUMENT_ROOT'].'HK/includes/get_scxingzhi.php';
 ?>
 </head>
@@ -44,21 +43,18 @@ include $_SERVER['DOCUMENT_ROOT'].'HK/includes/get_scxingzhi.php';
 		<span>至</span><input type="text" placeholder="结束日期" id="endtime" data-date-format="yyyy-mm-dd" class="span1 datetime" style="width: 100px" />
 		
 		&nbsp;&nbsp;&nbsp;&nbsp;地区：
+		<select id="diqu" class="span1" style="width: 100px">
+		<option value="-1">全部</option>
+		</select>省份
 		<select id="sheng" class="span1" style="width: 100px">
-		<option value="0">全部</option>
-		<?php 
-		for($i = 0; $i < count($provinceID); $i++){
-			echo '<option value="'.$provinceID[$i].'">'.$provinceName[$i].'</option>';
-		}
-		?>
-		</select>省/市
+		<option value="-1">全部</option>
+		</select>城市
 		<select id="shi" class="span1" style="width: 100px">
-		<option value="0">全部</option>
-		</select>市/县
-		<select id="xian" class="span1" style="width: 100px">
-		<option value="0">全部</option>
+		<option value="-1">全部</option>
 		</select>县/区
-		</br>
+		<select id="xian" class="span1" style="width: 100px">
+		<option value="-1">全部</option>
+		</select>
 		</br>
 		客户名称：
 		<select id="kehuname" class="span2">
@@ -107,45 +103,47 @@ include $_SERVER['DOCUMENT_ROOT'].'HK/includes/get_scxingzhi.php';
 
 <div class="container-fluid">
 	<div class="row-fluid">
-		<div class="span12 well" align="center">
-<fieldset id="resultDiv">
-<table class="table" style="font-size:5px">
+		<div class="span12 well" align="center" id="Result" style="display: none">
+		<div id="loading"><img src="/HK/bootstrap/img/loading_mid.gif"></div>
+		<div id="noresult">无数据</div>
+<div id="resultDiv" data-spy="scroll" data-offset="0" style="width:110%;height:75%;overflow:auto; position: relative;" class="well table-bordered table-condensed">
+<table class="table table-bordered table-condensed table-striped table-hover" style="font-size:5px">
 	<thead>
-		<tr>
-			<th>序号</th>
-			<th>资料录入日期</th>
-			<th>首次成交日期</th>
-			<th>未交易天数</th>
-			<th>交易次数</th>
-			<th>省</th>
-			<th>市</th>
-			<th>县</th>
-			<th>商店名称</th>
-			<th>商店面积</th>
-			<th>商店性质</th>
-			<th>年销售额评估</th>
-			<th>品牌名称</th>
-			<th>客户名称</th>
-			<th>客户负责人</th>
-			<th>销售金额</th>
-			<th>最后提货时间</th>
-			<th>最后回访时间</th>
-			<th>店员数量</th>
-			<th>店长名称</th>
-			<th>出样数量</th>
-			<th>装修档次</th>
-			<th>推广意识</th>
-			<th>提货意向</th>
-			<th>竞争品牌</th>
-			<th>结算性质</th>
-			<th>客户来源</th>
-			<th>首拜访人</th>
+		<tr style="expression(this.offsetParent.scrollTop)">
+			<th style="text-align:center">序号</th>
+			<th style="text-align:center">资料录入日期</th>
+			<th style="text-align:center">首次成交日期</th>
+			<th style="text-align:center">未交易天数</th>
+			<th style="text-align:center">交易次数</th>
+			<th style="text-align:center">省</th>
+			<th style="text-align:center">市</th>
+			<th style="text-align:center">县</th>
+			<th style="text-align:center">商店名称</th>
+			<th style="text-align:center">商店面积</th>
+			<th style="text-align:center">商店性质</th>
+			<th style="text-align:center">年销售额评估</th>
+			<th style="text-align:center">品牌名称</th>
+			<th style="text-align:center">客户名称</th>
+			<th style="text-align:center">客户负责人</th>
+			<th style="text-align:center">销售金额</th>
+			<th style="text-align:center">最后提货时间</th>
+			<th style="text-align:center">最后回访时间</th>
+			<th style="text-align:center">店员数量</th>
+			<th style="text-align:center">店长名称</th>
+			<th style="text-align:center">出样数量</th>
+			<th style="text-align:center">装修档次</th>
+			<th style="text-align:center">推广意识</th>
+			<th style="text-align:center">提货意向</th>
+			<th style="text-align:center">竞争品牌</th>
+			<th style="text-align:center">结算性质</th>
+			<th style="text-align:center">客户来源</th>
+			<th style="text-align:center">首拜访人</th>
 		</tr>
 		<tbody id="resultData"></tbody>
 	</thead>
 	
 </table>
-</fieldset>
+</div>
 		</div>
 	</div>
 </div>
@@ -162,6 +160,26 @@ $('.datetime').datetimepicker({
 	}
 );
 
+$.getJSON(
+	    '/HK/includes/get_area.php',
+	    {preID:0},
+	    function(jsonData){
+	    	$("#diqu").html($("#areaDataTemplate").tmpl(jsonData));
+	    }
+);
+
+$("#diqu").change(function(){
+    $.getJSON(
+    	    '/HK/includes/get_province.php',
+    	    {areaID:$("#diqu").val()},
+    	    function(jsonData){
+    	    	$("#sheng").html($("#areaDataTemplate").tmpl(jsonData));
+    	    }
+	);
+    $("#shi").html('<option value="-1">全部</option>');
+	$("#xian").html('<option value="-1">全部</option>');
+});
+
 $("#sheng").change(function(){
     $.getJSON(
     	    '/HK/includes/get_city.php',
@@ -170,7 +188,7 @@ $("#sheng").change(function(){
     	    	$("#shi").html($("#areaDataTemplate").tmpl(jsonData));
     	    }
 	);
-	$("#xian").html('<option value="0">全部</option>');
+	$("#xian").html('<option value="-1">全部</option>');
 });
 
 $("#shi").change(function(){
@@ -184,38 +202,53 @@ $("#shi").change(function(){
 });
 
 $("#query").click(function(){
+	$("#Result").slideDown("fast");
+	$("#loading").show();
+	$("#resultDiv").hide();
+	$("#noresult").hide();
 	var starttime = $("#starttime").val();
 	var endtime = $("#endtime").val();
-	if(starttime != null && endtime == null || (starttime == null && endtime != null)){
+	//alert(starttime+endtime.length);
+	if(starttime.length != 0 && endtime.length == 0 || (starttime.length == 0 && endtime.length != 0)){
 		alert("请选择起始或结束时间！");
+		$("#loading").hide();
 		return;
 	}
-	if(starttime != null && endtime != null){
+	if(starttime.length != 0 && endtime.length != 0){
 		if(starttime > endtime){
 			alert("起始时间不能大于结束时间！");
+			$("#loading").hide();
 			return;
 		}
 	}
-	if(starttime == null && endtime == null){
+	if(starttime.length == 0 && endtime.length == 0){
 		starttime="";
 		endtime="";
 	}
+	//alert($("#shi").val());
+	//alert($("#diqu").val()+$("#sheng").val()+$("#shi").val()+$("#xian").val());
 	$.getJSON(
 			'/HK/includes/get_huifang.php',
 			{
 			kehutype:$("#kehutype").val(),
 			starttime:starttime,
 			endtime:endtime,
-			provincecode:$("#sheng").val(),
-			citycode:$("#shi").val(),
-			areacode:$("#xian").val(),
+			areaid:$("#diqu").val(),
+			provinceid:$("#sheng").val(),
+			cityid:$("#shi").val(),
+			countyid:$("#xian").val(),
 			kehuid:$("#kehuname").val(),
 			scname:$("#scname").val(),
 			scxingzhi:$("#scxingzhi").val(),
 			tihuoyx:$("#tihuoyx").val()
 			},
 			function(jsonData){
-				$("#resultData").html($("#resultDataTemplate").tmpl(jsonData));
+				$("#loading").hide();
+				if(jsonData.length == 0) $("#noresult").show();
+				else{
+					$("#resultData").html($("#resultDataTemplate").tmpl(jsonData));
+					$("#resultDiv").slideDown("fast");
+				}
 			}
 	);
 	
@@ -233,7 +266,7 @@ $("#query").click(function(){
 <td>${jytimes}</td>
 <td>${province}</td>
 <td>${city}</td>
-<td>${area}</td>
+<td>${county}</td>
 <td>${scname}</td>
 <td>${scmianji}</td>
 <td>${scxingzhi}</td>
