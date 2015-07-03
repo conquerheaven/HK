@@ -3,7 +3,7 @@ include 'db.inc.php';
 
 
 try {
-	$sql = 'SELECT ID,Name FROM scxingzhi';
+	$sql = 'SELECT * FROM zxdangci';
 	$s = $pdo->prepare($sql);
 	$s->execute();
 } catch (PDOException $e) {

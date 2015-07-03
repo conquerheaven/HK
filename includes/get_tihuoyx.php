@@ -11,7 +11,9 @@ try {
 	include 'error.php';
 	exit();
 }
+$arr=array();
+$arr[] = array('dataID'=>'0' , 'dataValue'=>'全部');
 while($row = $s->fetch()){
-	$tihuoyxID[] = $row['ID'];
-	$tihuoyxName[] = $row['Name'];
+	$arr[] = array('dataID'=>$row['ID'] , 'dataValue'=>$row['Name']);
 }
+echo json_encode($arr);

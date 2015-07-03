@@ -3,7 +3,7 @@ include 'db.inc.php';
 
 
 try {
-	$sql = 'SELECT ID,Name FROM scxingzhi';
+	$sql = 'SELECT * FROM shoukuanfs';
 	$s = $pdo->prepare($sql);
 	$s->execute();
 } catch (PDOException $e) {
@@ -14,6 +14,6 @@ try {
 $arr=array();
 $arr[] = array('dataID'=>'0' , 'dataValue'=>'全部');
 while($row = $s->fetch()){
-	$arr[] = array('dataID'=>$row['ID'] , 'dataValue'=>$row['Name']);
+	$arr[] = array('dataID'=>$row['ID'] , 'dataValue'=>$row['name']);
 }
 echo json_encode($arr);

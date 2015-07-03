@@ -24,8 +24,6 @@ include $_SERVER['DOCUMENT_ROOT'] . 'HK/includes/head.html';
 include $_SERVER['DOCUMENT_ROOT'].'HK/includes/yanzheng.php';
 include $_SERVER['DOCUMENT_ROOT'].'HK/includes/get_kehuname.php';
 include $_SERVER['DOCUMENT_ROOT'].'HK/includes/get_scname.php';
-include $_SERVER['DOCUMENT_ROOT'].'HK/includes/get_tihuoyx.php';
-include $_SERVER['DOCUMENT_ROOT'].'HK/includes/get_scxingzhi.php';
 ?>
 </head>
 <body>
@@ -78,22 +76,10 @@ include $_SERVER['DOCUMENT_ROOT'].'HK/includes/get_scxingzhi.php';
 		
 		&nbsp;&nbsp;&nbsp;&nbsp;商场性质：
 		<select id="scxingzhi" class="span2" style="width: 100px">
-		<option value="0">全部商场</option>
-		<?php 
-		for($i = 0; $i < count($scxingzhiID); $i++){
-			echo '<option value="'.$scxingzhiID[$i].'">'.$scxingzhiName[$i].'</option>';
-		}
-		?>
 		</select>
 		
 		&nbsp;&nbsp;&nbsp;&nbsp;提货意向：
 		<select id="tihuoyx" class="span1">
-		<option value="0">全部</option>
-		<?php 
-		for($i = 0; $i < count($tihuoyxID); $i++){
-			echo '<option value="'.$tihuoyxID[$i].'">'.$tihuoyxName[$i].'</option>';
-		}
-		?>
 		</select>
 		&nbsp;&nbsp;&nbsp;&nbsp;
 		<input type="button" value="搜索" class="btn btn-primary" id="query">
@@ -159,6 +145,21 @@ $('.datetime').datetimepicker({
 		forceParse: 0
 	}
 );
+
+$.getJSON(
+	    '/HK/includes/get_tihuoyx.php',
+	    function(jsonData){
+	    	$("#tihuoyx").html($("#areaDataTemplate").tmpl(jsonData));
+	    }
+);
+
+$.getJSON(
+	    '/HK/includes/get_scxingzhi.php',
+	    function(jsonData){
+	    	$("#scxingzhi").html($("#areaDataTemplate").tmpl(jsonData));
+	    }
+);
+
 
 $.getJSON(
 	    '/HK/includes/get_area.php',
