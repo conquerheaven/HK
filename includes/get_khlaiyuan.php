@@ -12,7 +12,7 @@ try {
 	exit();
 }
 $arr=array();
-$arr[] = array('dataID'=>'0' , 'dataValue'=>'全部');
+$arr[] = array('dataID'=>'0' , 'dataValue'=>'无');
 while($row = $s->fetch()){
 	$arr[] = array('dataID'=>$row['ID'] , 'dataValue'=>$row['Name']);
 }

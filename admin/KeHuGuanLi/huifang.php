@@ -22,7 +22,6 @@
 $pageId = '[0]';
 include $_SERVER['DOCUMENT_ROOT'] . 'HK/includes/head.html';
 include $_SERVER['DOCUMENT_ROOT'].'HK/includes/yanzheng.php';
-include $_SERVER['DOCUMENT_ROOT'].'HK/includes/get_kehuname.php';
 include $_SERVER['DOCUMENT_ROOT'].'HK/includes/get_scname.php';
 ?>
 </head>
@@ -56,12 +55,6 @@ include $_SERVER['DOCUMENT_ROOT'].'HK/includes/get_scname.php';
 		</br>
 		客户名称：
 		<select id="kehuname" class="span2">
-		<option value="0">全部客户</option>
-		<?php 
-		for($i = 0; $i < count($kehuid); $i++){
-			echo '<option value="'.$kehuid[$i].'">【'.$kehuname[$i].'】【'.$kehutelephone[$i].'】</option>';
-		}
-		?>
 		</select>
 		
 		&nbsp;&nbsp;&nbsp;&nbsp;商场名称：
@@ -144,6 +137,13 @@ $('.datetime').datetimepicker({
 		minView: 2,
 		forceParse: 0
 	}
+);
+
+$.getJSON(
+	    '/HK/includes/get_kehuname.php',
+	    function(jsonData){
+	    	$("#kehuname").html($("#kehuDataTemplate").tmpl(jsonData));
+	    }
 );
 
 $.getJSON(
@@ -257,6 +257,9 @@ $("#query").click(function(){
 </script>
 <script id="areaDataTemplate" type="text/x-jQuery-tmpl">
 	<option value="${dataID}">${dataValue}</option>
+</script>
+<script id="kehuDataTemplate" type="text/x-jQuery-tmpl">
+	<option value="${dataID}">【${dataValue1}】【${dataValue2}】</option>
 </script>
 <script id="resultDataTemplate" type="text/x-jQuery-tmpl">
 <tr class="success">

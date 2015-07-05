@@ -3,7 +3,7 @@ include 'db.inc.php';
 
 
 try {
-	$sql = 'SELECT ID,name,telephone FROM kehulist order by name';
+	$sql = 'SELECT name FROM ygdangan where bmname="YW" or bmname="06" order by name';
 	$s = $pdo->prepare($sql);
 	$s->execute();
 } catch (PDOException $e) {
@@ -12,8 +12,8 @@ try {
 	exit();
 }
 $arr=array();
-$arr[] = array('dataID'=>'0' , 'dataValue1'=>'全部' , 'dataValue2'=>'');
+$arr[] = array('dataID'=>'' , 'dataValue'=>'无');
 while($row = $s->fetch()){
-	$arr[] = array('dataID'=>$row['ID'] , 'dataValue1'=>$row['name'] , 'dataValue2'=>$row['telephone']);
+	$arr[] = array('dataID'=>$row['name'] , 'dataValue'=>$row['name']);
 }
 echo json_encode($arr);

@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>客户资料录入</title>
+<title>修改客户资料</title>
 	<link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 	<link href="../../bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
 	<link href="../../bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
@@ -20,21 +20,24 @@
 	<script type="text/javascript" src="../../bootstrap/js/bootstrap-modal.js"></script>
 	<script type="text/javascript" src="../../bootstrap/js/bootstrap-alert.js"></script>
 	<script type="text/javascript" src="../../bootstrap/js/jquery.validate.min.js"></script>
-</head>
-<body>
+	
 <?php 
 $pageId = '[0]';
 include $_SERVER['DOCUMENT_ROOT'] . 'HK/includes/head.html';
 include $_SERVER['DOCUMENT_ROOT'].'HK/includes/yanzheng.php';
-
-if(isset($_POST['hide_addkehu'])){
-	include $_SERVER['DOCUMENT_ROOT'].'HK/includes/add_kehu.php';
-	exit();
-}
 ?>
+</head>
+<body>
 <div class="container-fluid">
 	<div class="row-fluid">
 		<div class="span12 well" align="center">
+		请选择客户：
+		<select id="kehuid" class="span2">
+		</select>
+		<div id="loading" style="display: none"><img src="/HK/bootstrap/img/loading_small.gif"></div>
+		<div id="failed" style="display: none"><p>修改成功！</p></div>
+		<div id="success" style="display: none"><p>修改失败！</p></div>
+		<div id="kehuinfo" style="display: none">
 		<form action="" id="addkehu" method="post">
 		<table border="0" bordercolor="white" style="border-collapse:collapse;">
 		<tr>
@@ -42,7 +45,7 @@ if(isset($_POST['hide_addkehu'])){
 			<td><font color="#FF0000"><input type="text" placeholder="客户名称" id="kehuname" name="kehuname" class="span12" /></font></td>
 			<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
 			<td>录入日期：</td>
-			<td><input type="text" readonly="readonly" placeholder="录入日期" id="addtime" name="addtime" class="span12" value="<?php echo $now=date('Y-m-d')?>" /></td>
+			<td><input type="text" readonly="readonly" placeholder="录入日期" id="addtime" name="addtime" class="span12" /></td>
 		</tr>
 		<tr>
 			<td>客户名称简写：</td>
@@ -211,7 +214,7 @@ if(isset($_POST['hide_addkehu'])){
 			<td><input type="text" readonly="readonly" placeholder="点击浏览" id="img" name="img" class="span12" /></td>
 			<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
 			<td>资料录入人：</td>
-			<td><input type="text" readonly="readonly" id="caozuoren" name="caozuoren" class="span12" value="<?php echo $user=$_SESSION['username']?>" /></td>
+			<td><input type="text" readonly="readonly" id="caozuoren" name="caozuoren" class="span12"/></td>
 		</tr>
 		<tr>
 			<td>评价简述：</td>
@@ -219,17 +222,17 @@ if(isset($_POST['hide_addkehu'])){
 		</tr>
 		<tr>
 			<td></td>
-			<td><input type="hidden" id="hide_addkehu" name="hide_addkehu" value="1"></td>
+			<td></td>
 			<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-			<td><input type="submit" class="btn btn-success" id="submit" value="提 交" /></td>
+			<td><input type="submit" class="btn btn-success" id="submit" value="修改" /></td>
 			<td></td>
 		</tr>
 		</table>
 		</form>
 		</div>
+		</div>
 	</div>
 </div>
-
 <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -268,6 +271,86 @@ if(isset($_POST['hide_addkehu'])){
 </div>
 
 <script type="text/javascript">
+$.getJSON(
+	    '/HK/includes/get_kehuname.php',
+	    function(jsonData){
+	    	$("#kehuid").html($("#kehuDataTemplate").tmpl(jsonData));
+	    }
+);
+
+$("#kehuid").change(function(){
+	$("#kehuinfo").slideUp("fast");
+	$("#loading").slideDown("fast");
+	$("#success").hide();
+	$("#failed").hide();
+	var kehuid = $("#kehuid").val();
+	if(kehuid == 0){
+		$("#loading").slideUp("fast");
+		return;
+	}
+	$.ajaxSettings.async = false;
+	$.getJSON(
+			'/HK/includes/get_kehuinfo.php',
+			{kehuid:kehuid},
+			function(jsonData){
+				if(jsonData['re'] != 1){
+					$("#loading").slideUp("fast");
+					alert('数据库错误！！'+jsonData['re']);
+					return;
+				}
+				$("#kehuname").val(jsonData['kehuname']);
+				$("#addtime").val(jsonData['addtime']);
+				$("#ename").val(jsonData['ename']);
+				$("#scname").val(jsonData['scname']);
+				$("#scmianji").val(jsonData['scmianji']);
+				$("#address").val(jsonData['address']);
+				$("#telephone").val(jsonData['telephone']);
+				$("#dzname").val(jsonData['dzname']);
+				$("#telephone2").val(jsonData['telephone2']);
+				$("#dztelephone").val(jsonData['dztelephone']);
+				$("#mobile").val(jsonData['mobile']);
+				$("#dzqq").val(jsonData['dzqq']);
+				$("#chuanzheng").val(jsonData['chuanzheng']);
+				$("#dzqita").val(jsonData['dzqita']);
+				$("#pingpai").val(jsonData['pingpai']);
+				$("#pingpailx").val(jsonData['pingpailx']);
+				$("#mianji1").val(jsonData['mianji1']);
+				$("#jzpingpai").val(jsonData['jzpingpai']);
+				$("#chuyangnum").val(jsonData['chuyangnum']);
+				$("#mianji2").val(jsonData['mianji2']);
+				$("#caozuoren").val(jsonData['caozuoren']);
+				$("#pingjia").val(jsonData['pingjia']);
+				$("#tihuoyx").val(jsonData['tihuoyx']);
+				$("#khlaiyuan").val(jsonData['khlaiyuan']);
+				$("#baifangren").val(jsonData['baifangren']);
+				$("#khpj").val(jsonData['khpj']);
+				$("#khtuiguang").val(jsonData['khtuiguang']);
+				$("#jsxz").val(jsonData['jsxz']);
+				$("#zxdangci").val(jsonData['zxdangci']);
+				$("#scxingzhi").val(jsonData['scxingzhi']);
+				$("#diqu").val(jsonData['diqu']);
+				$("#tuoyunbu").val(jsonData['tuoyunbu']);
+				$("#fuzheren").val(jsonData['fuzheren']);
+				if(jsonData['sheng']>0){
+					refresh_sheng(jsonData['sheng']);
+					$("#sheng").val(jsonData['sheng']);
+				}
+				if(jsonData['shi']>0){
+					refresh_shi();
+					$("#shi").val(jsonData['shi']);
+				}
+				if(jsonData['xian']>0){
+					refresh_xian();
+					$("#xian").val(jsonData['xian']);
+				}
+				$("#loading").hide();
+				$("#kehuinfo").slideDown("slow");
+			}
+	);
+	$.ajaxSettings.async = true;
+});
+
+
 refreshtyb();
 
 $.getJSON(
@@ -336,37 +419,50 @@ $.getJSON(
 );
 
 $("#diqu").change(function(){
-    $.getJSON(
+	refresh_sheng();
+    $("#shi").html('<option value="-1">请选择城市</option>');
+	$("#xian").html('<option value="-1">请选择区县</option>');
+});
+
+$("#sheng").change(function(){
+    refresh_shi();
+	$("#xian").html('<option value="-1">请选择区县</option>');
+});
+
+$("#shi").change(function(){
+    refresh_xian();
+});
+
+function refresh_sheng(){
+	$.getJSON(
     	    '/HK/includes/get_province.php',
     	    {areaID:$("#diqu").val()},
     	    function(jsonData){
     	    	$("#sheng").html($("#areaDataTemplate").tmpl(jsonData));
     	    }
 	);
-    $("#shi").html('<option value="-1">请选择城市</option>');
-	$("#xian").html('<option value="-1">请选择区县</option>');
-});
+}
 
-$("#sheng").change(function(){
-    $.getJSON(
+function refresh_shi(){
+	$.getJSON(
     	    '/HK/includes/get_city.php',
     	    {provinceID:$("#sheng").val()},
     	    function(jsonData){
     	    	$("#shi").html($("#areaDataTemplate").tmpl(jsonData));
     	    }
 	);
-	$("#xian").html('<option value="-1">请选择区县</option>');
-});
+}
 
-$("#shi").change(function(){
-    $.getJSON(
+function refresh_xian(){
+	$.getJSON(
     	    '/HK/includes/get_xian.php',
     	    {cityID:$("#shi").val()},
     	    function(jsonData){
     	    	$("#xian").html($("#areaDataTemplate").tmpl(jsonData));
     	    }
 	);
-});
+}
+
 
 $("#addkehu").validate({
 	rules:{
@@ -391,7 +487,7 @@ $("#addkehu").validate({
 	    error.appendTo(element.parent());
 	},
 	submitHandler: function(form){   //表单提交句柄,为一回调函数，带一个参数：form   
-	    form.submit();   //提交表单   
+	    modify_kehuinfo();  
 	},
 	onkeyup: false,
 	onfocusout: false,
@@ -450,11 +546,58 @@ function addtyb(){
 	);
 }
 
-
+function modify_kehuinfo(){
+	$.getJSON(
+			'/HK/includes/modify_kehuinfo.php',
+			{kehuid:kehuid,
+			kehuname:$("#kehuname").val(),
+			addtime:$("#addtime").val(),
+			ename:$("#ename").val(),
+			scname:$("#scname").val(),
+			scmianji:$("#scmianji").val(),
+			address:$("#address").val(),
+			telephone:$("#telephone").val(),
+			dzname:$("#dzname").val(),
+			telephone2:$("#telephone2").val(),
+			dztelephone:$("#dztelephone").val(),
+			mobile:$("#mobile").val(),
+			dzqq:$("#dzqq").val(),
+			chuanzheng:$("#chuanzheng").val(),
+			dzqita:$("#dzqita").val(),
+			pingpai:$("#pingpai").val(),
+			pingpailx:$("#pingpailx").val(),
+			mianji1:$("#mianji1").val(),
+			jzpingpai:$("#jzpingpai").val(),
+			chuyangnum:$("#chuyangnum").val(),
+			mianji2:$("#mianji2").val(),
+			caozuoren:$("#caozuoren").val(),
+			pingjia:$("#pingjia").val(),
+			tihuoyx:$("#tihuoyx").val(),
+			khlaiyuan:$("#khlaiyuan").val(),
+			baifangren:$("#baifangren").val(),
+			khpj:$("#khpj").val(),
+			khtuiguang:$("#khtuiguang").val(),
+			jsxz:$("#jsxz").val(),
+			zxdangci:$("#zxdangci").val(),
+			scxingzhi:$("#scxingzhi").val(),
+			diqu:$("#diqu").val(),
+			tuoyunbu:$("#tuoyunbu").val(),
+			fuzheren:$("#fuzheren").val(),
+			sheng:$("#sheng").val(),
+			shi:$("#shi").val(),
+			xian:$("#xian").val()
+			},
+			function(jsonData){
+			}
+	);
+}
 
 </script>
 <script id="areaDataTemplate" type="text/x-jQuery-tmpl">
 	<option value="${dataID}">${dataValue}</option>
+</script>
+<script id="kehuDataTemplate" type="text/x-jQuery-tmpl">
+	<option value="${dataID}">【${dataValue1}】【${dataValue2}】</option>
 </script>
 </body>
 </html>

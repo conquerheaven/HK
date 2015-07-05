@@ -21,7 +21,7 @@
 		}
 		CreateXMLHttpRequest();
 		xmlobj.onreadystatechange = StarHandlerKehu;
-		xmlobj.open("GET","kehu.php?"+message,true);
+		xmlobj.open("GET","/HK/XiaoShouGuanLi/XiaoShouDan/kehu.php?"+message,true);
 		xmlobj.send(null);
 	}
 	function StarHandlerKehu(){
