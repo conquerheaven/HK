@@ -131,13 +131,13 @@ function get_jsxingzhi($id){
 
 try {
 	$sql = 'SELECT ID,name,jsxz,addtime,sheng,city,xian,scname,scmianji,scxingzhi,pingpai,fuzheren,lastjytime,lasthftime,dzname,zxdangci,khtuiguang,tihuoyx,pingpai2,khlaiyuan,baifangren,yearsaleval,dianyuannum,chuyangnum FROM kehulist WHERE ID <> 0';
-	if($kehutype == 1) $sql .= ' AND lastjytime <> "0000-00-00"';
-	if($kehutype == 2) $sql .= ' AND lastjytime = "0000-00-00"';
+	if($kehutype == 1) $sql .= ' AND ID in(select distinct(kehuid) FROM ddmessage WHERE stats = 3)';
+	if($kehutype == 2) $sql .= ' AND ID not in(select distinct(kehuid) FROM ddmessage WHERE stats = 3)';
 	if($kehuid != 0) $sql .= ' AND ID = '.$kehuid;
 	if($scname != "0") $sql .= ' AND scname = "'.$scname.'"';
 	if($scxingzhi != 0) $sql .= ' AND scxingzhi = '.$scxingzhi;
 	if($tihuoyx != 0) $sql .= ' AND tihuoyx = '.$tihuoyx;
-	if($starttime != "" && $endtime != "") $sql .= ' AND ID in(select kehuid FROM ddmessage WHERE xiadangtime between "'.$starttime.'" and "'.$endtime.'")';
+	if($starttime != "" && $endtime != "") $sql .= ' AND ID in(select distinct(kehuid) FROM ddmessage WHERE xiadangtime between "'.$starttime.'" and "'.$endtime.'")';
 	if($provinceid != -1) $sql .= ' AND sheng = '.$provinceid;
 	if($cityid != -1) $sql .= ' AND city = '.$cityid;
 	if($countyid != -1) $sql .= ' AND xian = '.$countyid;

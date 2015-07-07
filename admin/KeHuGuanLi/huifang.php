@@ -17,6 +17,7 @@
 	<script type="text/javascript" src="../../bootstrap/js/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
 	<script type="text/javascript" src="../../bootstrap/js/ajax.js"></script>
 	<script type="text/javascript" src="../../bootstrap/js/jquery-session.js"></script>
+	<script type="text/javascript" src="../../bootstrap/js/jquery.freezeheader.js"></script>
 	
 <?php 
 $pageId = '[0]';
@@ -28,7 +29,7 @@ include $_SERVER['DOCUMENT_ROOT'].'HK/includes/get_scname.php';
 <body>
 <div class="container-fluid">
 	<div class="row-fluid">
-		<div class="span12 well" align="center">
+		<div class="span12 well" align="center" style="font-size: 12px;">
 		客户类型：
 		<select id="kehutype" class="span1" style="width: 100px">
 		<option value="0">全部客户</option>
@@ -75,20 +76,22 @@ include $_SERVER['DOCUMENT_ROOT'].'HK/includes/get_scname.php';
 		<select id="tihuoyx" class="span1">
 		</select>
 		&nbsp;&nbsp;&nbsp;&nbsp;
-		<input type="button" value="搜索" class="btn btn-primary" id="query">
+		<input type="button" value="查询" class="btn btn-primary" id="query">
+		<input type="button" value="下载" class="btn btn-success" id="download">
 		</div>
 	</div>
 </div>
 
-<div class="container-fluid">
-	<div class="row-fluid">
-		<div class="span12 well" align="center" id="Result" style="display: none">
+<div class="container-fluid well" align="center" id="Result" style="display: none;">
 		<div id="loading"><img src="/HK/bootstrap/img/loading_mid.gif"></div>
 		<div id="noresult">无数据</div>
-<div id="resultDiv" data-spy="scroll" data-offset="0" style="width:110%;height:75%;overflow:auto; position: relative;" class="well table-bordered table-condensed">
-<table class="table table-bordered table-condensed table-striped table-hover" style="font-size:5px">
+<form action="/HK/includes/download.php" method="post" target="_blank" id="download_form">
+<textarea name="download_table" id="download_table" style="display: none"></textarea>
+</form>
+<div id="resultDiv">
+<table class="table-bordered table-striped table-hover" style="font-size:5px;text-align:center" id="table">
 	<thead>
-		<tr style="expression(this.offsetParent.scrollTop)">
+		<tr Bgcolor="#CCCCCC">
 			<th style="text-align:center">序号</th>
 			<th style="text-align:center">资料录入日期</th>
 			<th style="text-align:center">首次成交日期</th>
@@ -123,9 +126,7 @@ include $_SERVER['DOCUMENT_ROOT'].'HK/includes/get_scname.php';
 	
 </table>
 </div>
-		</div>
 	</div>
-</div>
 <script type="text/javascript">
 $('.datetime').datetimepicker({
 		language:  'zh-CN',
@@ -254,6 +255,17 @@ $("#query").click(function(){
 	);
 	
 });
+
+$("#download").click(function(){
+	var table = $("#table").prop("outerHTML");
+	$("#download_table").val(table);
+    //window.open('about:blank',"blank","height=400,width=820,status=yes,toolbar=no,menubar=no,location=no");
+    $("#download_form").submit();
+	//window.open('/HK/includes/download.php');
+	//window.location.href='/HK/includes/download.php';
+});
+
+$("#table").freezeHeader({ 'height': '500px' });
 </script>
 <script id="areaDataTemplate" type="text/x-jQuery-tmpl">
 	<option value="${dataID}">${dataValue}</option>
@@ -262,7 +274,7 @@ $("#query").click(function(){
 	<option value="${dataID}">【${dataValue1}】【${dataValue2}】</option>
 </script>
 <script id="resultDataTemplate" type="text/x-jQuery-tmpl">
-<tr class="success">
+<tr class="">
 <td>${xuhao}</td>
 <td>${addtime}</td>
 <td>${firstjytime}</td>

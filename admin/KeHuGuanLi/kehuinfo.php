@@ -36,7 +36,7 @@ if(isset($_POST['hide_addkehu'])){
 	<div class="row-fluid">
 		<div class="span12 well" align="center">
 		<form action="" id="addkehu" method="post">
-		<table border="0" bordercolor="white" style="border-collapse:collapse;">
+		<table>
 		<tr>
 			<td><font color="#FF0000">*</font>客户名称：</td>
 			<td><font color="#FF0000"><input type="text" placeholder="客户名称" id="kehuname" name="kehuname" class="span12" /></font></td>

@@ -35,11 +35,10 @@ include $_SERVER['DOCUMENT_ROOT'].'HK/includes/yanzheng.php';
 		<select id="kehuid" class="span2">
 		</select>
 		<div id="loading" style="display: none"><img src="/HK/bootstrap/img/loading_small.gif"></div>
-		<div id="failed" style="display: none"><p>修改成功！</p></div>
-		<div id="success" style="display: none"><p>修改失败！</p></div>
+		<div id="result" style="display: none"></div>
 		<div id="kehuinfo" style="display: none">
-		<form action="" id="addkehu" method="post">
-		<table border="0" bordercolor="white" style="border-collapse:collapse;">
+		<form id="addkehu" action="">
+		<table>
 		<tr>
 			<td><font color="#FF0000">*</font>客户名称：</td>
 			<td><font color="#FF0000"><input type="text" placeholder="客户名称" id="kehuname" name="kehuname" class="span12" /></font></td>
@@ -281,8 +280,7 @@ $.getJSON(
 $("#kehuid").change(function(){
 	$("#kehuinfo").slideUp("fast");
 	$("#loading").slideDown("fast");
-	$("#success").hide();
-	$("#failed").hide();
+	$("#result").hide();
 	var kehuid = $("#kehuid").val();
 	if(kehuid == 0){
 		$("#loading").slideUp("fast");
@@ -343,8 +341,8 @@ $("#kehuid").change(function(){
 					refresh_xian();
 					$("#xian").val(jsonData['xian']);
 				}
-				$("#loading").hide();
-				$("#kehuinfo").slideDown("slow");
+				$("#loading").slideUp();
+				$("#kehuinfo").slideDown();
 			}
 	);
 	$.ajaxSettings.async = true;
@@ -463,8 +461,8 @@ function refresh_xian(){
 	);
 }
 
-
 $("#addkehu").validate({
+	debug:true,
 	rules:{
 		kehuname:{
 			required:true
@@ -486,13 +484,11 @@ $("#addkehu").validate({
 	errorPlacement: function (error, element) {
 	    error.appendTo(element.parent());
 	},
-	submitHandler: function(form){   //表单提交句柄,为一回调函数，带一个参数：form   
+	submitHandler: function(){
 	    modify_kehuinfo();  
-	},
-	onkeyup: false,
-	onfocusout: false,
-	onclick: false
+	}
 });
+
 
 function refreshtyb(){
 	$.getJSON(
@@ -547,9 +543,12 @@ function addtyb(){
 }
 
 function modify_kehuinfo(){
+	$("#kehuinfo").slideUp("fast");
+	$("#loading").slideDown("fast");
+	$("#result").hide();
 	$.getJSON(
 			'/HK/includes/modify_kehuinfo.php',
-			{kehuid:kehuid,
+			{kehuid:$("#kehuid").val(),
 			kehuname:$("#kehuname").val(),
 			addtime:$("#addtime").val(),
 			ename:$("#ename").val(),
@@ -588,6 +587,14 @@ function modify_kehuinfo(){
 			xian:$("#xian").val()
 			},
 			function(jsonData){
+				$("#loading").hide();
+				if(jsonData['result'] == 1){
+					$("#result").html('<p>修改成功！</p>').slideDown("fast");
+				}else if(jsonData['result'] == 0){
+					$("#result").html('<p>修改失败！</p>'+jsonData['message']).slideDown("fast");
+				}else{
+					$("#result").html('<p>修改失败！未知错误</p>').slideDown("fast");
+				}
 			}
 	);
 }
