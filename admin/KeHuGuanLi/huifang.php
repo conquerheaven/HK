@@ -23,7 +23,6 @@
 $pageId = '[0]';
 include $_SERVER['DOCUMENT_ROOT'] . 'HK/includes/head.html';
 include $_SERVER['DOCUMENT_ROOT'].'HK/includes/yanzheng.php';
-include $_SERVER['DOCUMENT_ROOT'].'HK/includes/get_scname.php';
 ?>
 </head>
 <body>
@@ -31,49 +30,43 @@ include $_SERVER['DOCUMENT_ROOT'].'HK/includes/get_scname.php';
 	<div class="row-fluid">
 		<div class="span12 well" align="center" style="font-size: 12px;">
 		客户类型：
-		<select id="kehutype" class="span1" style="width: 100px">
+		<select id="kehutype" class="span1" style="width: 100px;font-size: 12px;" >
 		<option value="0">全部客户</option>
 		<option value="1">交易过客户</option>
 		<option value="2">未交易客户</option>
 		</select>
 		
-		&nbsp;&nbsp;&nbsp;&nbsp;销售日期：<input type="text" placeholder="起始日期" id="starttime" data-date-format="yyyy-mm-dd" class="span1 datetime" style="width: 100px" />
-		<span>至</span><input type="text" placeholder="结束日期" id="endtime" data-date-format="yyyy-mm-dd" class="span1 datetime" style="width: 100px" />
+		&nbsp;&nbsp;&nbsp;&nbsp;销售日期：<input type="text" placeholder="起始日期" id="starttime" data-date-format="yyyy-mm-dd" class="span1 datetime" style="width: 100px;font-size: 12px;" />
+		<span>至</span><input type="text" placeholder="结束日期" id="endtime" data-date-format="yyyy-mm-dd" class="span1 datetime" style="width: 100px;font-size: 12px;" />
 		
 		&nbsp;&nbsp;&nbsp;&nbsp;地区：
-		<select id="diqu" class="span1" style="width: 100px">
+		<select id="diqu" class="span1" style="width: 100px;font-size: 12px;">
 		<option value="-1">全部</option>
 		</select>省份
-		<select id="sheng" class="span1" style="width: 100px">
+		<select id="sheng" class="span1" style="width: 100px;font-size: 12px;">
 		<option value="-1">全部</option>
 		</select>城市
-		<select id="shi" class="span1" style="width: 100px">
+		<select id="shi" class="span1" style="width: 100px;font-size: 12px;">
 		<option value="-1">全部</option>
 		</select>县/区
-		<select id="xian" class="span1" style="width: 100px">
+		<select id="xian" class="span1" style="width: 100px;font-size: 12px;">
 		<option value="-1">全部</option>
 		</select>
 		</br>
 		客户名称：
-		<select id="kehuname" class="span2">
+		<select id="kehuname" class="span2" style="font-size: 12px;">
 		</select>
 		
 		&nbsp;&nbsp;&nbsp;&nbsp;商场名称：
-		<select id="scname" class="span2">
-		<option value="0">全部商场</option>
-		<?php 
-		for($i = 0; $i < count($scname); $i++){
-			echo '<option value="'.$scname[$i].'">'.$scname[$i].'</option>';
-		}
-		?>
+		<select id="scname" class="span2" style="font-size: 12px;">
 		</select>
 		
 		&nbsp;&nbsp;&nbsp;&nbsp;商场性质：
-		<select id="scxingzhi" class="span2" style="width: 100px">
+		<select id="scxingzhi" class="span2" style="width: 100px;font-size: 12px;">
 		</select>
 		
 		&nbsp;&nbsp;&nbsp;&nbsp;提货意向：
-		<select id="tihuoyx" class="span1">
+		<select id="tihuoyx" class="span1" style="font-size: 12px;">
 		</select>
 		&nbsp;&nbsp;&nbsp;&nbsp;
 		<input type="button" value="查询" class="btn btn-primary" id="query">
@@ -138,6 +131,13 @@ $('.datetime').datetimepicker({
 		minView: 2,
 		forceParse: 0
 	}
+);
+
+$.getJSON(
+	    '/HK/includes/get_scname.php',
+	    function(jsonData){
+	    	$("#scname").html($("#areaDataTemplate").tmpl(jsonData));
+	    }
 );
 
 $.getJSON(
@@ -274,7 +274,7 @@ $("#table").freezeHeader({ 'height': '500px' });
 	<option value="${dataID}">【${dataValue1}】【${dataValue2}】</option>
 </script>
 <script id="resultDataTemplate" type="text/x-jQuery-tmpl">
-<tr class="">
+<tr>
 <td>${xuhao}</td>
 <td>${addtime}</td>
 <td>${firstjytime}</td>
