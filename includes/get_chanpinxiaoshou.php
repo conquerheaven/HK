@@ -24,6 +24,7 @@ $jiajucheng = $_GET['jiajucheng'];
 $kehu = $_GET['kehu'];
 $fahuoren = $_GET['fahuoren'];
 $tuoyunbu = $_GET['tuoyunbu'];
+$tuoyunname;
 $name = '无';
 $caizhi;
 $id;
@@ -53,7 +54,6 @@ $Finish = 0;
 $Unfinish = 0;
 $Final_num = 0;
 
-
 $arr=array();
 
 function table_productclass(){
@@ -65,7 +65,7 @@ function table_productclass(){
 		}
 	} catch (PDOException $e) {
 		$output = 'Error query productclass: ' . $e->getMessage();
-		include 'ConnectError.php';
+		echo json_encode(array('wrong'=>$output));
 		exit();
 	}
 }
@@ -78,7 +78,7 @@ function table_yanse(){
 		}
 	} catch (PDOException $e) {
 		$output = 'Error query yanse: ' . $e->getMessage();
-		include 'ConnectError.php';
+		echo json_encode(array('wrong'=>$output));
 		exit();
 	}
 }
@@ -91,7 +91,7 @@ function table_caizhi(){
 		}
 	} catch (PDOException $e) {
 		$output = 'Error query caizhi: ' . $e->getMessage();
-		include 'ConnectError.php';
+		echo json_encode(array('wrong'=>$output));
 		exit();
 	}
 }
@@ -105,7 +105,7 @@ function table_kehuadd($ID){
 		return '';
 	} catch (PDOException $e) {
 		$output = 'Error query province: ' . $e->getMessage();
-		include 'ConnectError.php';
+		echo json_encode(array('wrong'=>$output));
 		exit();
 	}
 }
@@ -115,13 +115,14 @@ function table_kehulist(){
 		//echo '#'.$GLOBALS['fuzeren'];
 		$res = $GLOBALS['pdo']->query($sql);
 		if($row = $res->fetch()){
-			if($GLOBALS['area'] != 'all' && $GLOBALS['area'] != $row['dqid']) return false;
-			if($GLOBALS['province'] != 'all' && $GLOBALS['province'] != $row['sheng']) return false;
-			if($GLOBALS['city'] != 'all' && $GLOBALS['city'] != $row['city']) return false;
-			if($GLOBALS['xian'] != 'all' && $GLOBALS['xian'] != $row['xian']) return false;
+			if($GLOBALS['area'] != -1 && $GLOBALS['area'] != $row['dqid']) return false;
+			if($GLOBALS['province'] != -1 && $GLOBALS['province'] != $row['sheng']) return false;
+			if($GLOBALS['city'] != -1 && $GLOBALS['city'] != $row['city']) return false;
+			if($GLOBALS['xian'] != -1 && $GLOBALS['xian'] != $row['xian']) return false;
 			if($GLOBALS['pinpai'] != 'all' && $GLOBALS['pinpai'] != $row['pingpai']) return false;
 			if($GLOBALS['kehufuzeren'] != 'all' && $GLOBALS['kehufuzeren'] != $row['fuzheren']) return false;
-			if($GLOBALS['tuoyunbu'] != $row['tybid']) return false;
+			if($GLOBALS['tuoyunbu'] !=0 && $GLOBALS['tuoyunbu'] != $row['tybid']) return false;
+			$GLOBALS['tuoyunname'] = $row['tybid'];
 			$GLOBALS['kehuname'] = $row['name'];
 			$GLOBALS['addr_sheng'] = table_kehuadd($row['sheng']);
 			$GLOBALS['addr_shi'] = table_kehuadd($row['city']);
@@ -135,7 +136,7 @@ function table_kehulist(){
 		//echo $kehuname.$address.'#';
 	} catch (PDOException $e) {
 		$output = 'Error query kehulist: ' . $e->getMessage();
-		include 'ConnectError.php';
+		echo json_encode(array('wrong'=>$output));
 		exit();
 	}
 }
@@ -148,22 +149,22 @@ function table_jiaoyistats(){
 		}
 	} catch (PDOException $e) {
 		$output = 'Error query jiaoyistats: ' . $e->getMessage();
-		include 'ConnectError.php';
+		echo json_encode(array('wrong'=>$output));
 		exit();
 	}
 }
 function table_tuoyunbu(){
 	try {
-		$sql = 'SELECT name FROM tuoyunbu WHERE ID="'.$GLOBALS['tuoyunbu'].'"';
+		$sql = 'SELECT name FROM tuoyunbu WHERE ID="'.$GLOBALS['tuoyunname'].'"';
 		$res = $GLOBALS['pdo']->query($sql);
 		if($row = $res->fetch()){
-			$GLOBALS['tuoyunbu'] = $row['name'];
+			$GLOBALS['tuoyunname'] = $row['name'];
 		}else{
-			$GLOBALS['tuoyunbu'] = '';
+			$GLOBALS['tuoyunname'] = '';
 		}
 	} catch (PDOException $e) {
 		$output = 'Error query tuoyunbu: ' . $e->getMessage();
-		include 'ConnectError.php';
+		echo json_encode(array('wrong'=>$output));
 		exit();
 	}
 }
@@ -181,17 +182,19 @@ function table_products($id){
 		}
 	} catch (PDOException $e) {
 		$output = 'Error query products: ' . $e->getMessage();
-		include 'ConnectError.php';
+		echo json_encode(array('wrong'=>$output));
 		exit();
 	}
 }
-function show(){
+
+function show(&$arr){
 	$temparr=array();
 	if($GLOBALS['shoukuanqk']=='0') $GLOBALS['shoukuanqk'] = '下单未发货';
-	if($GLOBALS['shoukuanqk']=='已结算') $temparr = array('class'=>'success');
-	else if($GLOBALS['shoukuanqk']=='下单未发货') $temparr = array('class'=>'info');
-	else $temparr = array('class'=>'danger');
-	$temparr = array('danhao'=>$GLOBALS['danhao'],
+	if($GLOBALS['shoukuanqk']=='已结算') $css = 'black';//$temparr = array('css'=>'#CCFF00');
+	else if($GLOBALS['shoukuanqk']=='下单未发货') $css = 'green';//$temparr = array('css'=>'#FEFF80');
+	else $css = 'red';//$temparr = array('css'=>'#FE9980');
+	$temparr = array('css'=>$css,
+			'danhao'=>$GLOBALS['danhao'],
 			'time'=>$GLOBALS['time'],
 			'leixing'=>$GLOBALS['leixing'],
 			'name'=>$GLOBALS['name'],
@@ -204,7 +207,7 @@ function show(){
 			'shoukuanqk'=>$GLOBALS['shoukuanqk'],
 			'shoukuanfs'=>$GLOBALS['shoukuanfs'],
 			'tuoyunhao'=>$GLOBALS['tuoyunhao'],
-			'tuoyunbu'=>$GLOBALS['tuoyunbu'],
+			'tuoyunbu'=>$GLOBALS['tuoyunname'],
 			'fhr'=>$GLOBALS['fhr'],
 			'addr_sheng'=>$GLOBALS['addr_sheng'],
 			'addr_shi'=>$GLOBALS['addr_shi'],
@@ -221,7 +224,7 @@ function show(){
 	else $GLOBALS['Unfinish'] += $GLOBALS['sum'];
 	$GLOBALS['Final_num'] += $GLOBALS['num'];
 }
-function table_ddmessage(){
+function table_ddmessage(&$arr){
 	try {
 		$sql = 'SELECT piaohao,tuoyunhao,kehuid,xiadangtime,shoukuanfs,stats,chaozuoren,productsid,shoukuanri,fhr FROM ddmessage WHERE stats <> 6 and xiadangtime BETWEEN "'.$GLOBALS['start'].'" and "'.$GLOBALS['end'].'"';
 		$sql .= ' AND tuoyunhao LIKE "%'.$GLOBALS['tuoyunhao'].'%" AND piaohao LIKE "%'.$GLOBALS['danhao'].'%"';
@@ -231,7 +234,6 @@ function table_ddmessage(){
 		if($GLOBALS['fahuoren'] != 'all') $sql .= 'AND fhr = "'.$GLOBALS['fahuoren'].'"';
 		$sql .= ' ORDER BY xiadangtime';
 		$result = $GLOBALS['pdo']->query($sql);
-		//echo $sql;
 		$ary=array('1','2','3','4','5','6','7','8','9','0');
 		while($row = $result->fetch()){
 			$GLOBALS['kehuid'] = $row['kehuid'];
@@ -239,6 +241,7 @@ function table_ddmessage(){
 			$GLOBALS['tuoyunhao'] = $row['tuoyunhao'];
 			$GLOBALS['shoukuanqk'] = $row['stats'];
 			table_jiaoyistats();
+			table_tuoyunbu();
 			$GLOBALS['shoukuanri'] = $row['shoukuanri'];
 			$GLOBALS['danhao'] = $row['piaohao'];
 			$GLOBALS['time'] = $row['xiadangtime'];
@@ -268,23 +271,22 @@ function table_ddmessage(){
 					table_caizhi();
 					table_productclass();
 					table_yanse();
-					table_tuoyunbu();
-					show();
+					show($arr);
 				}else $i += 3;
 				$i++;
 			}
 		}
 	} catch (PDOException $e) {
 		$output = 'Error query ddmessage: ' . $e->getMessage();
-		include 'ConnectError.php';
+		echo json_encode(array('wrong'=>$output));
 		exit();
 	}
 }
-function Main(){
+function Main(&$arr){
 	try {
 		$sql = 'SELECT ID,name,caizhi,idname,classid,yanshe FROM products WHERE idname LIKE "%'.$GLOBALS['xinghao'].'%" AND name LIKE "%'.$GLOBALS['proname'].'%"';
-		if($GLOBALS['class'] != 'all') $sql .= ' AND classid = '.$GLOBALS['class'].'';
-		if($GLOBALS['yanse'] != 'all') $sql .= ' AND yanshe = '.$GLOBALS['yanse'].'';
+		if($GLOBALS['class'] != 0) $sql .= ' AND classid = '.$GLOBALS['class'].'';
+		if($GLOBALS['yanse'] != 0) $sql .= ' AND yanshe = '.$GLOBALS['yanse'].'';
 		$result = $GLOBALS['pdo']->query($sql);
 		$flag = false;
 		while($row = $result->fetch()){
@@ -292,19 +294,19 @@ function Main(){
 			$flag = true;
 		}
 		if(!$flag){
-			$output = '没有此类产品';
-			include 'error.php';
-			//exit();
+			echo json_encode($arr);
+			exit();
 		}
-		//table_ddmessage();
+		table_ddmessage($arr);
 	} catch (PDOException $e) {
 		$output = 'Error query products: ' . $e->getMessage();
-		include 'ConnectError.php';
+		echo json_encode(array('wrong'=>$output));
 		exit();
 	}
 }
-Main();
+Main($arr);
 $runtime = number_format((microtime_float()-$starttime) , 4).'s';
 //echo '<h4 align="center">【已结算：' . $Finish . '元】【 未结算：' . $Unfinish . '元】【总交易额：' . ($Finish+$Unfinish) . '元】【总交易量：' . $Final_num .'个】['.$runtime.']K</h4>';
 //echo $Output . '</tbody></table>';
 echo json_encode($arr);
+//echo json_encode(array('wrong'=>$ttttt));

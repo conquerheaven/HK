@@ -117,6 +117,7 @@ include $_SERVER['DOCUMENT_ROOT'].'HK/includes/yanzheng.php';
 <textarea name="download_table" id="download_table" style="display: none"></textarea>
 </form>
 <div id="resultDiv">
+<div id="tongji"></div>
 <table class="table-bordered table-striped table-hover" style="font-size:5px;text-align:center" id="table">
 	<thead>
 		<tr Bgcolor="#CCCCCC">
@@ -201,8 +202,22 @@ $("#query").click(function(){
 			},
 			function(jsonData){
 				$("#loading").hide();
+				if('wrong' in jsonData){
+					alert(jsonData['wrong']);
+					return;
+				}
+				//alert($("#class").val()+' '+$("#yanse").val()+' '+$("#xinghao").val()+' '+$("#proname").val()+' '+jsonData['re']);
 				if(jsonData.length == 0) $("#noresult").show();
 				else{
+					var finish = 0;
+					var unfinish = 0;
+					var final_num = 0;
+					for(var i = 0; i < jsonData.length; i++){
+						if(jsonData[i]['shoukuanqk'] == '已结算') finish += parseInt(jsonData[i]['sum']);
+						else unfinish += parseInt(jsonData[i]['sum']);
+						final_num += parseInt(jsonData[i]['num']);
+					}
+					$("#tongji").html('<h4 align="center">【已结算：'+finish+'元】【 未结算：'+unfinish+'元】【总交易额：'+(finish+unfinish)+'元】【总交易量：'+final_num+'个】</h4>');
 					$("#resultData").html($("#resultDataTemplate").tmpl(jsonData));
 					$("#resultDiv").slideDown("fast");
 				}
@@ -322,12 +337,20 @@ $("#shi").change(function(){
     	    }
 	);
 });
+
+$("#download").click(function(){
+	var table = $("#table").prop("outerHTML");
+	$("#download_table").val(table);
+    $("#download_form").submit();
+});
+
+$("#table").freezeHeader({ 'height': '500px' });
 </script>
 <script id="areaDataTemplate" type="text/x-jQuery-tmpl">
 	<option value="${dataID}">${dataValue}</option>
 </script>
 <script id="resultDataTemplate" type="text/x-jQuery-tmpl">
-<tr class="${class}">
+<tr style="color:${css}">
 <td>${danhao}</td>
 <td>${time}</td>
 <td>${leixing}</td>

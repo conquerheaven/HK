@@ -12,9 +12,8 @@ try {
 	exit();
 }
 $arr=array();
-$arr[] = array('dataID'=>'0' , 'dataValue'=>'全部');
+$arr[] = array('dataID'=>'' , 'dataValue'=>'全部');
 while($row = $s->fetch()){
-	$scname[] = $row['scname'];
 	$arr[] = array('dataID'=>$row['scname'] , 'dataValue'=>$row['scname']);
 }
 echo json_encode($arr);
